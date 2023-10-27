@@ -6,6 +6,8 @@ import java.util.Random;
 
 public class GameBoard extends JFrame implements ActionListener {
     JPanel panel;
+    JPanel startNewGamePanel;
+    JButton newGameButton;
     JButton[] buttons;
     JLabel[] labels;
     int rows;
@@ -40,7 +42,17 @@ public class GameBoard extends JFrame implements ActionListener {
             panel.add(buttons[i]);
         }
 
-        add(panel);
+
+        newGameButton = new JButton("Start new game");
+        newGameButton.addActionListener(this);
+
+        startNewGamePanel = new JPanel();
+        startNewGamePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        startNewGamePanel.add(newGameButton);
+
+
+        add(panel, BorderLayout.CENTER);
+        add(startNewGamePanel, BorderLayout.SOUTH);
         setResizable(false);
         setVisible(true);
         setSize(500, 500);
@@ -71,9 +83,17 @@ public class GameBoard extends JFrame implements ActionListener {
 
         }
     }
+        public void startNewGame() {
+            for (int i = 0; i < rows * cols; i++) {
+                String text = String.valueOf(board[i]);
+                buttons[i].setText(text);
+            }
+        }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent newGameEvent) {
+        shuffleBoard();
+        startNewGame();
 
     }
 }
