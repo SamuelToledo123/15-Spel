@@ -23,6 +23,8 @@ public class GameBoard extends JFrame implements ActionListener {
         board = new int[rows * cols];
         this.shuffleBoard();
 
+        System.out.println("test");
+
 
         for (int i = 0; i < rows * cols; i++) {
             buttons[i] = new JButton();
@@ -39,6 +41,7 @@ public class GameBoard extends JFrame implements ActionListener {
             panel.setBackground(Color.white);
             panel.setLayout(new GridLayout(4, 4));
             panel.add(buttons[i]);
+
         }
 
         add(panel);
@@ -128,6 +131,7 @@ public class GameBoard extends JFrame implements ActionListener {
     public static void main(String[] args) {
         GameBoard board = new GameBoard();
     }
+
 
     }
 
