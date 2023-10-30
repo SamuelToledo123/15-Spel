@@ -101,6 +101,20 @@ public class GameBoard extends JFrame implements ActionListener {
         }
         return true;
     }
+    public  void winFrame() {
+
+        winGame();
+        JFrame frame = new JFrame(" You Win!");
+        JLabel label = new JLabel("You solved the puzzle!",JLabel.CENTER);
+        label.setFont(new Font("TimesRoman",Font.BOLD,20));
+        frame.add(label);
+        frame.setLayout(new GridLayout(1,1));
+        frame.setSize(300,300);
+        frame.setBackground(Color.white);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+    }
 
     @Override
     public void actionPerformed(ActionEvent newGameEvent) {
