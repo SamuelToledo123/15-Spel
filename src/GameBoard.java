@@ -84,12 +84,13 @@ public class GameBoard extends JFrame implements ActionListener {
 
         }
     }
-        public void startNewGame() {
-            for (int i = 0; i < rows * cols; i++) {
-                String text = String.valueOf(board[i]);
-                buttons[i].setText(text);
-            }
+
+    public void startNewGame() {
+        for (int i = 0; i < rows * cols; i++) {
+            String text = String.valueOf(board[i]);
+            buttons[i].setText(text);
         }
+    }
 
     public boolean winGame() {
 
@@ -106,62 +107,66 @@ public class GameBoard extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent newGameEvent) {
 
-        int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to start a new game?");
-        if (input == 0) {
-            shuffleBoard();
-            startNewGame();
-        }
-        if (input == 1) {
-            System.exit(0);
-        }
-    });
+        if (newGameEvent.getSource() == newGameButton) {
+            int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to start a new game?");
+            if (input == 0) {
+                shuffleBoard();
+                startNewGame();
+            }
+            if (input == 1) {
+                System.exit(0);
+            }
 
-        String s = e.getActionCommand().toString();
-        int findRow = Integer.parseInt(s.split(",")[0]); //rad
-        int findColumn = Integer.parseInt(s.split(",")[1]); //kolumn
+        } else {
+
+            String s = newGameEvent.getActionCommand().toString();
+            int findRow = Integer.parseInt(s.split(",")[0]); //rad
+            int findColumn = Integer.parseInt(s.split(",")[1]); //kolumn
 
 
             // Sålänge vald board inte lika med -1
-        if (findRow >= 0 && findRow < rows && findColumn >= 0 && findColumn < cols && board[findRow * cols + findColumn] != -1) {
-            int index = findRow * cols + findColumn;
+            if (findRow >= 0 && findRow < rows && findColumn >= 0 && findColumn < cols && board[findRow * cols + findColumn] != -1) {
+                int index = findRow * cols + findColumn;
 
-            // söker höger
-            if (findColumn + 1 < cols && board[index + 1] == -1) {
-                int swap = board[index]; //Sparar värdet man tryckte på i swap
-                board[index] = board[index + 1];  //Värdet man tryckte på blir värdet till höger istället
-                board[index + 1] = swap; //Sparar första högra värdet i swap.
+                // söker höger
+                if (findColumn + 1 < cols && board[index + 1] == -1) {
+                    int swap = board[index]; //Sparar värdet man tryckte på i swap
+                    board[index] = board[index + 1];  //Värdet man tryckte på blir värdet till höger istället
+                    board[index + 1] = swap; //Sparar första högra värdet i swap.
 
-               //Parsar till en sträng och switchar bricka så de visas
-                buttons[index].setText(Integer.toString(board[index]));
-                buttons[index + 1].setText(Integer.toString(board[index + 1]));
-            }
-            // söker vänster
-            else if (findColumn - 1 >= 0 && board[index - 1] == -1) {
-                int swap = board[index];
-                board[index] = board[index - 1];
-                board[index - 1] = swap;
+                    //Parsar till en sträng och switchar bricka så de visas
+                    buttons[index].setText(Integer.toString(board[index]));
+                    buttons[index + 1].setText(Integer.toString(board[index + 1]));
+                }
+                // söker vänster
+                else if (findColumn - 1 >= 0 && board[index - 1] == -1) {
+                    int swap = board[index];
+                    board[index] = board[index - 1];
+                    board[index - 1] = swap;
 
-                buttons[index].setText(Integer.toString(board[index]));
-                buttons[index - 1].setText(Integer.toString(board[index - 1]));
-            }
-            // söker neråt
-            else if (findRow + 1 < rows && board[index + cols] == -1) {
-                int swap = board[index];
-                board[index] = board[index + cols];
-                board[index + cols] = swap;
+                    buttons[index].setText(Integer.toString(board[index]));
+                    buttons[index - 1].setText(Integer.toString(board[index - 1]));
+                }
+                // söker neråt
+                else if (findRow + 1 < rows && board[index + cols] == -1) {
+                    int swap = board[index];
+                    board[index] = board[index + cols];
+                    board[index + cols] = swap;
 
-                buttons[index].setText(Integer.toString(board[index]));
-                buttons[index + cols].setText(Integer.toString(board[index + cols]));
-            }
-            // upp
-            else if (findRow - 1 >= 0 && board[index - cols] == -1) {
-                int swap = board[index];
-                board[index] = board[index - cols];
-                board[index - cols] = swap;
+                    buttons[index].setText(Integer.toString(board[index]));
+                    buttons[index + cols].setText(Integer.toString(board[index + cols]));
+                }
+                // upp
+                else if (findRow - 1 >= 0 && board[index - cols] == -1) {
+                    int swap = board[index];
+                    board[index] = board[index - cols];
+                    board[index - cols] = swap;
 
-                buttons[index].setText(Integer.toString(board[index]));
-                buttons[index - cols].setText(Integer.toString(board[index - cols]));
+                    buttons[index].setText(Integer.toString(board[index]));
+                    buttons[index - cols].setText(Integer.toString(board[index - cols]));
+                }
             }
         }
     }
 }
+
