@@ -35,7 +35,7 @@ public class GameBoard extends JFrame implements ActionListener {
             buttons[i].addActionListener(this);
             buttons[i].add(labels[i]);
             buttons[i].setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-            buttons[i].setBackground(Color.black);
+            buttons[i].setBackground(Color.white);
             this.buttons[i].setActionCommand((i / cols) + "," + (i % cols)); // r[0] och kolumn[1] (4,5)
 
             panel.setBackground(Color.white);
@@ -107,6 +107,14 @@ public class GameBoard extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent newGameEvent) {
 
         int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to start a new game?");
+        if (input == 0) {
+            shuffleBoard();
+            startNewGame();
+        }
+        if (input == 1) {
+            System.exit(0);
+        }
+    });
 
         String s = e.getActionCommand().toString();
         int findRow = Integer.parseInt(s.split(",")[0]); //rad
@@ -154,13 +162,6 @@ public class GameBoard extends JFrame implements ActionListener {
                 buttons[index].setText(Integer.toString(board[index]));
                 buttons[index - cols].setText(Integer.toString(board[index - cols]));
             }
-        }
-        if (input == 0) {
-            shuffleBoard();
-            startNewGame();
-        }
-        if (input == 1) {
-            System.exit(0);
         }
     }
 }
