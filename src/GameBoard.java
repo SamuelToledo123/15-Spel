@@ -90,10 +90,29 @@ public class GameBoard extends JFrame implements ActionListener {
             }
         }
 
+    public boolean winGame() {
+
+        int count = 1;
+        for (int i = 0; i < rows * cols; i++) {
+            if (board[i] != count && board[i] != -1) {
+                return false;
+            }
+            count = count + 1;
+        }
+        return true;
+    }
+
     @Override
     public void actionPerformed(ActionEvent newGameEvent) {
-        shuffleBoard();
-        startNewGame();
 
+        int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to start a new game?");
+
+        if (input == 0) {
+            shuffleBoard();
+            startNewGame();
+        }
+        if (input == 1) {
+            System.exit(0);
+        }
     }
 }
