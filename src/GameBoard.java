@@ -102,7 +102,11 @@ public class GameBoard extends JFrame implements ActionListener {
             count = count + 1;
         }
         return true;
+
     }
+
+
+
 
     @Override
     public void actionPerformed(ActionEvent newGameEvent) {
@@ -165,8 +169,17 @@ public class GameBoard extends JFrame implements ActionListener {
                     buttons[index].setText(Integer.toString(board[index]));
                     buttons[index - cols].setText(Integer.toString(board[index - cols]));
                 }
+                Boolean winner = winGame();
+                if(winner == true) {
+                    JOptionPane.showMessageDialog(null, "you won the game!");
+                    winGame();
+                }
             }
         }
+    }
+
+    public static void main(String[] args) {
+        GameBoard n = new GameBoard();
     }
 }
 
