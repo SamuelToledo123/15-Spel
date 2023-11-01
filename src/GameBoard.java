@@ -88,12 +88,16 @@ public class GameBoard extends JFrame implements ActionListener {
 
     public void startNewGame() {
 
+        IsSolvable check = new IsSolvable();
+        if (!check.isSolvable(board)) {
+            JOptionPane.showMessageDialog(null,"Unsolvable Board");
+        }
+
         for (int i = 0; i < rows * cols; i++) {
             String text = String.valueOf(board[i]);
             buttons[i].setText(text);
             buttons[i].setForeground(Color.black); //Sätter om färgen till svart på alla rutor.
         }
-
 
     }
 
@@ -109,9 +113,6 @@ public class GameBoard extends JFrame implements ActionListener {
         return true;
 
     }
-
-
-
 
     @Override
     public void actionPerformed(ActionEvent newGameEvent) {
@@ -193,10 +194,6 @@ public class GameBoard extends JFrame implements ActionListener {
                 }
             }
         }
-    }
-
-    public static void main(String[] args) {
-        GameBoard n = new GameBoard();
     }
 }
 
