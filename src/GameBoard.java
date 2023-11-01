@@ -92,11 +92,6 @@ public class GameBoard extends JFrame implements ActionListener {
 
     public void startNewGame() {
 
-        IsSolvable check = new IsSolvable();
-        if (!check.isSolvable(board)) {
-            JOptionPane.showMessageDialog(null,"Unsolvable Board");
-        }
-
         for (int i = 0; i < rows * cols; i++) {
             String text = String.valueOf(board[i]);
             buttons[i].setText(text);
