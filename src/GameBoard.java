@@ -82,6 +82,7 @@ public class GameBoard extends JFrame implements ActionListener {
         for (int i = 0; i < rows * cols; i++) {
             board[i] = array[i];
 
+
         }
     }
 
@@ -139,8 +140,15 @@ public class GameBoard extends JFrame implements ActionListener {
                     board[index + 1] = swap; //Sparar första högra värdet i swap.
 
                     //Parsar till en sträng och switchar bricka så de visas
+                  panel.revalidate();
+                  panel.repaint();
                     buttons[index].setText(Integer.toString(board[index]));
                     buttons[index + 1].setText(Integer.toString(board[index + 1]));
+                    buttons[index].setForeground(Color.white);
+                    buttons[index +1].setForeground(Color.BLACK);
+
+                    
+
                 }
                 // söker vänster
                 else if (findColumn - 1 >= 0 && board[index - 1] == -1) {
@@ -150,6 +158,8 @@ public class GameBoard extends JFrame implements ActionListener {
 
                     buttons[index].setText(Integer.toString(board[index]));
                     buttons[index - 1].setText(Integer.toString(board[index - 1]));
+                    buttons[index].setForeground(Color.white);
+                    buttons[index -1].setForeground(Color.BLACK);
                 }
                 // söker neråt
                 else if (findRow + 1 < rows && board[index + cols] == -1) {
@@ -159,6 +169,8 @@ public class GameBoard extends JFrame implements ActionListener {
 
                     buttons[index].setText(Integer.toString(board[index]));
                     buttons[index + cols].setText(Integer.toString(board[index + cols]));
+                    buttons[index].setForeground(Color.white);
+                    buttons[index + cols].setForeground(Color.BLACK);
                 }
                 // upp
                 else if (findRow - 1 >= 0 && board[index - cols] == -1) {
@@ -168,11 +180,13 @@ public class GameBoard extends JFrame implements ActionListener {
 
                     buttons[index].setText(Integer.toString(board[index]));
                     buttons[index - cols].setText(Integer.toString(board[index - cols]));
+                    buttons[index].setForeground(Color.white);
+                    buttons[index - cols].setForeground(Color.BLACK);
                 }
                 Boolean winner = winGame();
                 if(winner == true) {
                     JOptionPane.showMessageDialog(null, "you won the game!");
-                    winGame();
+                     winGame();
                 }
             }
         }
