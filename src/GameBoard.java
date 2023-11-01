@@ -64,6 +64,11 @@ public class GameBoard extends JFrame implements ActionListener {
 
     public void shuffleBoard() {
 
+        IsSolvable check = new IsSolvable();
+        if (!check.isSolvable(board)) {
+            JOptionPane.showMessageDialog(null,"Unsolvable Board");
+        }
+
         Random random = new Random();
         int[] array = new int[16];
         for (int i = 0; i < 16; i++) {
@@ -81,7 +86,6 @@ public class GameBoard extends JFrame implements ActionListener {
 
         for (int i = 0; i < rows * cols; i++) {
             board[i] = array[i];
-
 
         }
     }
