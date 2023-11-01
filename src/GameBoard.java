@@ -11,22 +11,22 @@ public class GameBoard extends JFrame implements ActionListener {
     JButton[] buttons;
     JLabel[] labels;
     int rows;
-    int cols;
+    int column;
     int[] board;
 
     public GameBoard() {
 
         rows = 4;
-        cols = 4;
+        column = 4;
         panel = new JPanel();
 
-        buttons = new JButton[rows * cols];
-        labels = new JLabel[rows * cols];
-        board = new int[rows * cols];
+        buttons = new JButton[rows * column];
+        labels = new JLabel[rows * column];
+        board = new int[rows * column];
         this.shuffleBoard();
 
 
-        for (int i = 0; i < rows * cols; i++) {
+        for (int i = 0; i < rows * column; i++) {
             buttons[i] = new JButton();
             labels[i] = new JLabel();
             String text = String.valueOf(board[i]);
@@ -36,6 +36,7 @@ public class GameBoard extends JFrame implements ActionListener {
             buttons[i].add(labels[i]);
             buttons[i].setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
             buttons[i].setBackground(Color.white);
+            this.buttons[i].setActionCommand((i / column) + "," + (i % column)); // r[0] och kolumn[1] (4,5)
 
             panel.setBackground(Color.white);
             panel.setLayout(new GridLayout(4, 4));
@@ -62,6 +63,11 @@ public class GameBoard extends JFrame implements ActionListener {
     }
 
     public void shuffleBoard() {
+        IsSolvable check = new IsSolvable();
+        if (!check.isSolvable(board)) {
+            JOptionPane.showMessageDialog(null,"Unsolvable Board");
+        }
+
 
         Random random = new Random();
         int[] array = new int[16];
@@ -78,22 +84,23 @@ public class GameBoard extends JFrame implements ActionListener {
 
         }
 
-        for (int i = 0; i < rows * cols; i++) {
+        for (int i = 0; i < rows * column; i++) {
             board[i] = array[i];
 
         }
     }
-        public void startNewGame() {
-            for (int i = 0; i < rows * cols; i++) {
-                String text = String.valueOf(board[i]);
-                buttons[i].setText(text);
-            }
+
+    public void startNewGame() {
+        for (int i = 0; i < rows * column; i++) {
+            String text = String.valueOf(board[i]);
+            buttons[i].setText(text);
         }
+    }
 
     public boolean winGame() {
 
         int count = 1;
-        for (int i = 0; i < rows * cols; i++) {
+        for (int i = 0; i < rows * column; i++) {
             if (board[i] != count && board[i] != -1) {
                 return false;
             }
@@ -116,17 +123,94 @@ public class GameBoard extends JFrame implements ActionListener {
         frame.setLocationRelativeTo(null);
     }
 
+    public void winFrame() {
+
+        winGame();
+        JFrame frame = new JFrame("Winner");
+        JLabel label = new JLabel("You solved the puzzle!", JLabel.CENTER);
+        label.setFont(new Font("Helvetica", Font.BOLD, 20));
+        frame.add(label);
+        frame.setLayout(new GridLayout(1, 1));
+        frame.setSize(200, 200);
+        frame.setBackground(Color.white);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+    }
+
     @Override
-    public void actionPerformed(ActionEvent newGameEvent) {
+    public void actionPerformed(ActionEvent e) {
 
-        int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to start a new game?");
+        Boolean winner = winGame();
+        if (winner == false) {
 
-        if (input == 0) {
-            shuffleBoard();
-            startNewGame();
-        }
-        if (input == 1) {
-            System.exit(0);
+            if (e.getSource() == newGameButton) {
+                int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to start a new game?");
+                if (input == 0) {
+                    shuffleBoard();
+                    startNewGame();
+                }
+                if (input == 1) {
+                    System.exit(0);
+                }
+
+            } else {
+
+                String s = e.getActionCommand().toString();
+                int findRow = Integer.parseInt(s.split(",")[0]); //rad
+                int findColumn = Integer.parseInt(s.split(",")[1]); //kolumn
+
+
+                // Sålänge vald board inte lika med -1
+                if (findRow >= 0 && findRow < rows && findColumn >= 0 && findColumn < column && board[findRow * column + findColumn] != -1) {
+                    int index = findRow * column + findColumn;
+
+                    // söker höger
+                    if (findColumn + 1 < column && board[index + 1] == -1) {
+                        int swap = board[index]; //Sparar värdet man tryckte på i swap
+                        board[index] = board[index + 1];  //Värdet man tryckte på blir värdet till höger istället
+                        board[index + 1] = swap; //Sparar första högra värdet i swap.
+
+                        //Parsar till en sträng och switchar bricka så de visas
+                        buttons[index].setText(Integer.toString(board[index]));
+                        buttons[index + 1].setText(Integer.toString(board[index + 1]));
+                    }
+                    // söker vänster
+                    else if (findColumn - 1 >= 0 && board[index - 1] == -1) {
+                        int swap = board[index];
+                        board[index] = board[index - 1];
+                        board[index - 1] = swap;
+
+                        buttons[index].setText(Integer.toString(board[index]));
+                        buttons[index - 1].setText(Integer.toString(board[index - 1]));
+                    }
+                    // söker neråt
+                    else if (findRow + 1 < rows && board[index + column] == -1) {
+                        int swap = board[index];
+                        board[index] = board[index + column];
+                        board[index + column] = swap;
+
+                        buttons[index].setText(Integer.toString(board[index]));
+                        buttons[index + column].setText(Integer.toString(board[index + column]));
+                    }
+                    // upp
+                    else if (findRow - 1 >= 0 && board[index - column] == -1) {
+                        int swap = board[index];
+                        board[index] = board[index - column];
+                        board[index - column] = swap;
+
+                        buttons[index].setText(Integer.toString(board[index]));
+                        buttons[index - column].setText(Integer.toString(board[index - column]));
+
+                    }
+                    winner = winGame();
+                    if (winner == true) {
+                        winFrame();
+                    }
+                }
+            }
         }
     }
 }
+
+
