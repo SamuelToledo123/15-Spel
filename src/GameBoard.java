@@ -87,10 +87,14 @@ public class GameBoard extends JFrame implements ActionListener {
     }
 
     public void startNewGame() {
+
         for (int i = 0; i < rows * cols; i++) {
             String text = String.valueOf(board[i]);
             buttons[i].setText(text);
+            buttons[i].setForeground(Color.black); //Sätter om färgen till svart på alla rutor.
         }
+
+
     }
 
     public boolean winGame() {
@@ -140,8 +144,7 @@ public class GameBoard extends JFrame implements ActionListener {
                     board[index + 1] = swap; //Sparar första högra värdet i swap.
 
                     //Parsar till en sträng och switchar bricka så de visas
-                  panel.revalidate();
-                  panel.repaint();
+
                     buttons[index].setText(Integer.toString(board[index]));
                     buttons[index + 1].setText(Integer.toString(board[index + 1]));
                     buttons[index].setForeground(Color.white);
