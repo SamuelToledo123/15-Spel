@@ -66,6 +66,9 @@ public class GameBoard extends JFrame implements ActionListener {
         IsSolvable check = new IsSolvable();
         if (!check.isSolvable(board)) {
             JOptionPane.showMessageDialog(null,"Unsolvable Board");
+            final Runnable SOUND = (Runnable) Toolkit.getDefaultToolkit().getDesktopProperty
+                    ("win.sound.exclamation");
+            if (SOUND != null) SOUND.run();
         }
 
 
@@ -108,22 +111,6 @@ public class GameBoard extends JFrame implements ActionListener {
         }
         return true;
     }
-    public  void winFrame() {
-
-        winGame();
-        JFrame frame = new JFrame(" You Win!");
-        JLabel label = new JLabel("You solved the puzzle!",JLabel.CENTER);
-        label.setFont(new Font("TimesRoman",Font.BOLD,20));
-        frame.add(label);
-        frame.setLayout(new GridLayout(1,1));
-        frame.setSize(300,300);
-        frame.setBackground(Color.white);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
-    }
-
-
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -133,10 +120,16 @@ public class GameBoard extends JFrame implements ActionListener {
             if (e.getSource() == newGameButton) {
                 int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to start a new game?");
                 if (input == 0) {
+                    final Runnable SOUND = (Runnable) Toolkit.getDefaultToolkit().getDesktopProperty
+                            ("win.sound.exclamation");
+                    if (SOUND != null) SOUND.run();
                     shuffleBoard();
                     startNewGame();
                 }
                 if (input == 1) {
+                    final Runnable SOUND = (Runnable) Toolkit.getDefaultToolkit().getDesktopProperty
+                            ("win.sound.hand");
+                    if (SOUND != null) SOUND.run();
                     System.exit(0);
                 }
 
@@ -191,7 +184,11 @@ public class GameBoard extends JFrame implements ActionListener {
                     }
                     winner = winGame();
                     if (winner == true) {
-                        winFrame();
+                        JOptionPane.showMessageDialog(null, "you won the game!");
+                        final Runnable SOUND = (Runnable) Toolkit.getDefaultToolkit().getDesktopProperty
+                                ("win.sound.exclamation");
+                        if (SOUND != null) SOUND.run();
+                        winGame();
                     }
                 }
             }
